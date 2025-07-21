@@ -12,6 +12,7 @@ import Image from 'next/image';
 import Checkbox from '@/components/Checkbox';
 import { count } from 'console';
 import { signUp } from '@/requests/auth';
+import Button from '@/components/Button';
 
 function SignUp() {
     const [values, setValues] = useState({
@@ -123,9 +124,11 @@ function SignUp() {
                 }
 
                 <div className="flex flex-col justify-center w-full mt-8">
-                    <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition" type="submit">
+                    <Button
+                        type="submit"
+                    >
                         {isLoading ? <Loader /> : 'Sign Up'}
-                    </button>
+                    </Button>
                     <div className="flex justify-end items-center mt-5 gap-5">
                         <p>Already have an account?</p>
                         <Link className="bg-blue-100 text-blue-700 py-1 px-3 rounded hover:bg-blue-200 transition" href='/'>

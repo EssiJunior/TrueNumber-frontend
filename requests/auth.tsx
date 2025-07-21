@@ -26,6 +26,11 @@ export const signUp = (values: SignUpValues, setIsLoading: React.Dispatch<React.
     serverURL.post('/auth/register', data).then((response) => {
         setIsLoading(false);
         console.log(response);
+
+        signIn({
+            email: values.email,
+            password: values.password
+            }, setIsLoading, setErrorMessage)
     })
         .catch((error) => {
             setIsLoading(false);
@@ -39,10 +44,24 @@ export const signIn = (values: SignInValues, setIsLoading: React.Dispatch<React.
     serverURL.post('/auth/login', values).then((response) => {
         setIsLoading(false);
         console.log(response);
+
+        localStorage.setItem('token', response.data.token);
+
+        if (response.data.user.role === 'admin') {
+            window.location.href = '/dashboard/admin';
+            return;
+        }
+        else if (response.data.user.role === 'user') {
+            window.location.href = '/game';
+            return;
+        }
+        else {
+            console.error('Unknown role:', response.data.user.role);
+        }
     })
         .catch((error) => {
             setIsLoading(false);
             console.log(error);
-            setErrorMessage( error.response?.data?.msg || 'There was an error please try later.')
+            setErrorMessage(error.response?.data?.msg || 'There was an error please try later.')
         });
 }
