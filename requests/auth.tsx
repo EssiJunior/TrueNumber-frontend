@@ -27,6 +27,7 @@ export const signUp = (values: SignUpValues, setIsLoading: React.Dispatch<React.
         setIsLoading(false);
         console.log(response);
 
+        setIsLoading(true);
         signIn({
             email: values.email,
             password: values.password
@@ -47,16 +48,16 @@ export const signIn = (values: SignInValues, setIsLoading: React.Dispatch<React.
 
         localStorage.setItem('token', response.data.token);
 
-        if (response.data.user.role === 'admin') {
+        if (response.data.role === 'admin') {
             window.location.href = '/dashboard/admin';
             return;
         }
-        else if (response.data.user.role === 'user') {
+        else if (response.data.role === 'user') {
             window.location.href = '/game';
             return;
         }
         else {
-            console.error('Unknown role:', response.data.user.role);
+            console.error('Unknown role:', response.data.role);
         }
     })
         .catch((error) => {
