@@ -1,8 +1,8 @@
 interface InputTextProps {
   label: string;
   helper: string;
-  icon: React.ReactNode | null;
-  identifier: string;
+  icon?: React.ReactNode | null;
+  identifier?: string;
   type: string;
   handler: (e: React.ChangeEvent<HTMLInputElement>) => void;
   name: string;

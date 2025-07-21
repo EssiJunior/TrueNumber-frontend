@@ -2,14 +2,12 @@
 
 import { useState } from 'react'
 import InputText from '@/components/InputText';
-import PhoneNumberInput from '@/components/PhoneNumberInput';
 
 import Loader from '@/components/Loader/Loader';
-import serverURL from '@/utils/server';
 import Link from 'next/link';
 import { AlertOctagon, Eye, EyeClosed } from 'lucide-react';
 import Image from 'next/image';
-import Checkbox from '@/components/Checkbox';
+import { signIn } from '@/requests/auth';
 
 function SignIn() {
     const [values, setValues] = useState({
@@ -18,6 +16,8 @@ function SignIn() {
     })
     const [isLoading, setIsLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
+    const [showPassword, setShowPassword] = useState(false);
+
     function show() {
         return <Eye className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-500 text-xl cursor-pointer" onClick={() => toggle()} />
     }
@@ -26,19 +26,14 @@ function SignIn() {
     }
     const [icon, setIcon] = useState(show());
     function toggle() {
-        const x = document.getElementById('password-text');
-        if (x.type === 'password') {
-            x.type = 'text';
-            setIcon(hide())
-        } else {
-            x.type = 'password';
-            setIcon(show())
-        }
+        setShowPassword((prev) => !prev);
+        setIcon(!showPassword ? hide() : show());
     }
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValues({ ...values, [e.target.name]: e.target.value })
     }
-    const handleSubmit = (e) => {
+
+    const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true)
         if (values.email === '' || values.password === '') {
@@ -52,30 +47,33 @@ function SignIn() {
             }
         } else {
             setErrorMessage('')
-            return signIn()
+            return signIn(values, setIsLoading, setErrorMessage)
         }
     };
-    const signIn = () => {
-        serverURL.post('/auth/login', values).then((response) => {
-            setIsLoading(false);
-        })
-            .catch((error) => {
-                setIsLoading(false);
-                setErrorMessage('There was an error please try later.')
-            });
-    }
 
     return (
         <div className="h-screen w-full flex flex-col md:flex-row items-center justify-center relative">
-            <form className="flex flex-col  w-full md:w-1/2 h-full py-10 px-20 overflow-auto">
+            <form className="flex flex-col justify-center items-center  w-full md:w-1/2 h-full py-10 px-20 overflow-auto" onSubmit={handleSubmit}>
 
                 <h1 className="text-6xl font-extrabold bg-clip-text text-blue-500 mb-8 text-start w-full">
-                    Sign In
+                    Sign Up
                 </h1>
 
                 <section className="w-full">
-                    <InputText label='Email' helper='Enter your email' type="text" name='email' value={values.email} handler={handleChange} />
-                    <InputText label="Password" identifier='password-text' helper="Enter your password" icon={icon} type="password" name='password' value={values.password} handler={handleChange} />
+                    <InputText
+                        label='Email'
+                        helper='Enter your email'
+                        type="text"
+                        name='email'
+                        handler={handleChange} />
+                    <InputText
+                        label="Password"
+                        identifier='password-text'
+                        helper="Enter your password"
+                        icon={icon}
+                        type={showPassword ? "text" : "password"}
+                        name='password'
+                        handler={handleChange} />
                 </section>
 
                 {errorMessage !== '' &&
@@ -86,8 +84,8 @@ function SignIn() {
                 }
 
                 <div className="flex flex-col justify-center w-full mt-8">
-                    <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition" onClick={handleSubmit}>
-                        {isLoading ? <Loader size='40px' marginTop='0' bg='#fff' /> : 'Sign Up'}
+                    <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition" type="submit">
+                        {isLoading ? <Loader /> : 'Sign In'}
                     </button>
                     <div className="flex justify-end items-center mt-5 gap-5">
                         <p> Don&apos;t have an account?</p>

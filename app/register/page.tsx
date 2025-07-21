@@ -10,16 +10,22 @@ import Link from 'next/link';
 import { AlertOctagon, Eye, EyeClosed } from 'lucide-react';
 import Image from 'next/image';
 import Checkbox from '@/components/Checkbox';
+import { count } from 'console';
+import { signUp } from '@/requests/auth';
 
 function SignUp() {
     const [values, setValues] = useState({
         username: '',
         email: '',
         phoneNumber: '',
-        password: ''
+        password: '',
+        countryCode: '+237',
+        isAdmin: false
     })
     const [isLoading, setIsLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
+    const [showPassword, setShowPassword] = useState(false);
+
     function show() {
         return <Eye className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-500 text-xl cursor-pointer" onClick={() => toggle()} />
     }
@@ -28,33 +34,34 @@ function SignUp() {
     }
     const [icon, setIcon] = useState(show());
     function toggle() {
-        const x = document.getElementById('password-text');
-        if (x.type === 'password') {
-            x.type = 'text';
-            setIcon(hide())
-        } else {
-            x.type = 'password';
-            setIcon(show())
-        }
+        setShowPassword((prev) => !prev);
+        setIcon(!showPassword ? hide() : show());
     }
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+        if (e.target.name === 'isAdmin') {
+            setValues({ ...values, [e.target.name]: e.target.checked })
+            return;
+        }
+
         setValues({ ...values, [e.target.name]: e.target.value })
     }
-    const handleSubmit = (e) => {
+
+    const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true)
-        if (values.firstName === '' || values.lastName === '' || values.email === '' || values.password === '') {
-            if (values.firstName === "") {
+        if (values.username === '' || values.email === '' || values.phoneNumber === '' || values.password === '') {
+            if (values.username === "") {
                 setIsLoading(false)
-                setErrorMessage('Please enter your first name(s).')
-            }
-            else if (values.lastName === "") {
-                setIsLoading(false)
-                setErrorMessage('Please enter your last name(s).')
+                setErrorMessage('Please enter your username.')
             }
             else if (values.email === "") {
                 setIsLoading(false)
                 setErrorMessage('Please enter your email.')
+            }
+            else if (values.phoneNumber === "") {
+                setIsLoading(false)
+                setErrorMessage('Please enter your phone number.')
             }
             else if (values.password === "") {
                 setIsLoading(false)
@@ -65,33 +72,47 @@ function SignUp() {
             }
         } else {
             setErrorMessage('')
-            return signUp()
+            return signUp(values, setIsLoading, setErrorMessage)
         }
     };
-    const signUp = () => {
-        serverURL.post('/auth', values).then((response) => {
-            setIsLoading(false);
-        })
-            .catch((error) => {
-                setIsLoading(false);
-                setErrorMessage('There was an error please try later.')
-            });
-    }
 
     return (
         <div className="h-screen w-full flex flex-col md:flex-row items-center justify-center relative">
-            <form className="flex flex-col  w-full md:w-1/2 h-full py-10 px-20 overflow-auto">
+            <form className="flex flex-col  w-full md:w-1/2 h-full py-10 px-20 overflow-auto" onSubmit={handleSubmit}>
 
                 <h1 className="text-6xl font-extrabold bg-clip-text text-blue-500 mb-8 text-start w-full">
                     Sign Up
                 </h1>
 
                 <section className="w-full">
-                    <InputText label='Username' helper='Enter your username' type="text" name='userName' value={values.username} handler={handleChange} />
-                    <InputText label='Email' helper='Enter your email' type="text" name='email' value={values.email} handler={handleChange} />
-                    <PhoneNumberInput label='PhoneNumber' name='lastName' value={values.phoneNumber}  handler={handleChange} />
-                    <InputText label="Password" identifier='password-text' helper="Enter your password" icon={icon} type="password" name='password' value={values.password} handler={handleChange} />
-                    <Checkbox label="I am an admin" checked={false} onChange={() => { }} name="isAdmin" identifier="isAdmin" />
+                    <InputText
+                        label='Username'
+                        helper='Enter your username'
+                        type="text"
+                        name='username'
+                        handler={handleChange} />
+                    <InputText
+                        label='Email'
+                        helper='Enter your email'
+                        type="text"
+                        name='email'
+                        handler={handleChange} />
+                    <PhoneNumberInput
+                        label='PhoneNumber'
+                        onNumberChange={handleChange}
+                        onCountryCodeChange={handleChange} />
+                    <InputText
+                        label="Password"
+                        identifier='password-text'
+                        helper="Enter your password"
+                        icon={icon}
+                        type={showPassword ? "text" : "password"}
+                        name='password'
+                        handler={handleChange} />
+                    <Checkbox
+                        label="I am an admin"
+                        onChange={handleChange}
+                        name="isAdmin" />
                 </section>
 
                 {errorMessage !== '' &&
@@ -102,8 +123,8 @@ function SignUp() {
                 }
 
                 <div className="flex flex-col justify-center w-full mt-8">
-                    <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition" onClick={handleSubmit}>
-                        {isLoading ? <Loader size='40px' marginTop='0' bg='#fff' /> : 'Sign Up'}
+                    <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition" type="submit">
+                        {isLoading ? <Loader /> : 'Sign Up'}
                     </button>
                     <div className="flex justify-end items-center mt-5 gap-5">
                         <p>Already have an account?</p>
