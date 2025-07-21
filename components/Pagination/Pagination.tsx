@@ -37,7 +37,7 @@ export default function Pagination({ data, RenderComponent, isProduct, pageLimit
     };
 
     const getPaginationGroup = () => {
-        let start = Math.floor((currentPage - 1) / pageLimit) * pageLimit;
+        const start = Math.floor((currentPage - 1) / pageLimit) * pageLimit;
         return new Array(pageLimit).fill().map((_, idx) => start + idx + 1);
     };
 
