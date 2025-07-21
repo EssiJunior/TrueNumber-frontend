@@ -5,8 +5,8 @@ import { ArrowLeftCircle, ArrowRightCircle } from "lucide-react";
 //Pagination component
 //This component permit you to do pagination on data
 type PaginationProps = {
-    data: any[];
-    RenderComponent: React.ComponentType<any>;
+    data: unknown[];
+    RenderComponent: React.ComponentType<unknown>;
     isProduct?: boolean;
     pageLimit: number;
     dataLimit: number;
