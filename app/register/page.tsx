@@ -5,12 +5,10 @@ import InputText from '@/components/InputText';
 import PhoneNumberInput from '@/components/PhoneNumberInput';
 
 import Loader from '@/components/Loader/Loader';
-import serverURL from '@/utils/server';
 import Link from 'next/link';
 import { AlertOctagon, Eye, EyeClosed } from 'lucide-react';
 import Image from 'next/image';
 import Checkbox from '@/components/Checkbox';
-import { count } from 'console';
 import { signUp } from '@/requests/auth';
 import Button from '@/components/Button';
 

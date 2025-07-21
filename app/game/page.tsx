@@ -1,11 +1,8 @@
 "use client"
 
 import { useState } from 'react'
-import InputText from '@/components/InputText';
 
 import Loader from '@/components/Loader/Loader';
-import Link from 'next/link';
-import { AlertOctagon, Eye, EyeClosed } from 'lucide-react';
 import Image from 'next/image';
 // import { game } from '@/requests/auth';
 import Button from '@/components/Button';

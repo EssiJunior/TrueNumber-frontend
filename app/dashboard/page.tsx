@@ -16,14 +16,12 @@ import Pagination from "@/components/Pagination/Pagination";
 import UserRow from "@/components/TableRows/UserRow";
 import DashboardHeader from "@/containers/DashboardHeader";
 import { getUsers } from "@/requests/users";
-import RegisterModal from "@/components/Modals/RegisterModal";
 
 const Users = () => {
     const [users, setUsers] = useState([]);
 
     // HOOKS
     const [isLoading, setIsLoading] = useState(false);
-    const [isLogingOut, setIsLogingOut] = useState(false);
     const { isOpen } = useSidebar();
 
     // FUNCTIONS
@@ -78,7 +76,6 @@ const Users = () => {
 
             </div>
 
-            {/* <RegisterModal isOpen={true}  /> */}
         </div>
     );
 };
