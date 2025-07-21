@@ -9,6 +9,7 @@ import serverURL from '@/utils/server';
 import Link from 'next/link';
 import { AlertOctagon, Eye, EyeClosed } from 'lucide-react';
 import Image from 'next/image';
+import Checkbox from '@/components/Checkbox';
 
 function SignUp() {
     const [values, setValues] = useState({
@@ -90,6 +91,7 @@ function SignUp() {
                     <InputText label='Email' helper='Enter your email' type="text" name='email' value={values.email} handler={handleChange} />
                     <PhoneNumberInput label='PhoneNumber' name='lastName' value={values.phoneNumber}  handler={handleChange} />
                     <InputText label="Password" identifier='password-text' helper="Enter your password" icon={icon} type="password" name='password' value={values.password} handler={handleChange} />
+                    <Checkbox label="I am an admin" checked={false} onChange={() => { }} name="isAdmin" identifier="isAdmin" />
                 </section>
 
                 {errorMessage !== '' &&

@@ -1,0 +1,105 @@
+.sign-in {
+    // background-color: red;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Founders Grotesk, monospace;
+    @media (max-width: 990px) {
+        flex-direction: column-reverse;
+    }
+    .form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+        height: 100%;
+        // margin: 5rem auto;
+        @media screen and (max-width: 990px) {
+            height: 60%;
+            width: 100%;
+        }
+        // @media screen and (max-width: 490px) {
+        //     width: 100%;
+        //     margi
+        // }
+        // @media screen and (min-width: 491px) and (max-width: 590px) {
+        //     width: 80%;
+        // }
+        // @media screen and (min-width: 591px) and (max-width: 700px) {
+        //     width: 70%;
+        // }
+        // @media screen and (min-width: 701px) and (max-width: 990px) {
+        //     width: 60%;
+        // }
+        .holder {
+            width: 60%;
+            height: 60%;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            @media screen and (max-width: 490px) {
+                width: 90%;
+            }
+            @media screen and (min-width: 491px) and (max-width: 590px) {
+                width: 80%;
+            }
+            @media screen and (min-width: 591px) and (max-width: 700px) {
+                width: 70%;
+            }
+            @media screen and (min-width: 701px) and (max-width: 990px) {
+                width: 60%;
+            }
+            section{
+                width: 100%;
+            }
+            .action{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                width: 100%;
+                .alt{
+                    display: flex;
+                    justify-content: space-evenly;
+                    align-items: center;
+                    margin-top: 0.5rem;
+                }
+            }
+        }
+        img {
+            width: 60%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+    .illustration {
+        width: 50%;
+        height: 100%;
+        background-color: #CFE8EF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        @media (max-width: 990px) {
+            height: 40%;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
+
+h1,
+p {
+    @media (max-width: 700px) {
+        margin: 12px 0;
+        text-align: center;
+    }
+    @media (min-width: 701px) and (max-width: 990px) {
+        margin: 16px 0;
+        text-align: center;
+    }
+}
